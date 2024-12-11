@@ -1,6 +1,6 @@
 {
   "name": "ophiuchi",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "license": "MIT",
   "scripts": {
     "tauri": "tauri",
@@ -20,7 +20,10 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@tauri-apps/api": "^1.6.0",
+    "@tauri-apps/api": "^2.1.1",
+    "@tauri-apps/plugin-dialog": "^2.2.0",
+    "@tauri-apps/plugin-fs": "^2.2.0",
+    "@tauri-apps/plugin-shell": "^2.2.0",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
@@ -43,6 +46,6 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.6.2"
+    "@tauri-apps/cli": "^2.1.0"
   }
 }

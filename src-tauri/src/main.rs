@@ -3,11 +3,13 @@
 
 mod keychainmgr;
 
+use dotenv::dotenv;
+use keychainmgr::keychain_passwords;
 use std::env;
 use std::fs::File;
 use std::io::{self, prelude::*};
 use std::process::Command;
-use keychainmgr::keychain_passwords;
+use tauri_plugin_sentry::{minidump, sentry};
 
 #[tauri::command(rename_all = "snake_case")]
 fn add_line_to_hosts(hostname: String, password: String) {
@@ -231,30 +233,56 @@ fn check_docker_installed() -> Result<bool, String> {
   }
 }
 
+#[tauri::command[rename_all = "snake_case"]]
+fn open_finder_or_explorer(path: String) -> Result<(), String> {
+  let output = Command::new("open").arg(path.clone()).output();
+
+  match output {
+    Ok(output) => {
+      if output.status.success() {
+        Ok(())
+      } else {
+        Err(format!("Failed to open path: {}", path))
+      }
+    }
+    Err(err) => Err(format!("Failed to execute command: {}", err)),
+  }
+}
+
 fn main() {
+  dotenv().ok();
   let _ = fix_path_env::fix();
+  let sentry_dsn = std::env::var("SENTRY_DSN");
+  let mut builder = tauri::Builder::default();
 
-  let client = sentry_tauri::sentry::init((
-    "https://4dba3631eee3b1e7aeec29ba11fdfb84@o4504409717800960.ingest.sentry.io/4506153853255680",
-    sentry_tauri::sentry::ClientOptions {
-      release: sentry_tauri::sentry::release_name!(),
-      ..Default::default()
-    },
-  ));
+  if sentry_dsn.is_ok() {
+    let client = sentry::init((
+      sentry_dsn.unwrap(),
+      sentry::ClientOptions {
+        release: sentry::release_name!(),
+        ..Default::default()
+      },
+    ));
 
-  // Everything before here runs in both app and crash reporter processes
-//   let _guard = sentry_tauri::minidump::init(&client);
-  // Everything after here runs in only the app process
+    // Everything before here runs in both app and crash reporter processes
+    let _guard = minidump::init(&client);
+    // Everything after here runs in only the app process
 
+    builder = builder.plugin(tauri_plugin_sentry::init(&client));
+  }
 
-  tauri::Builder::default()
-    .plugin(sentry_tauri::plugin())
+  builder
+    .plugin(tauri_plugin_opener::init())
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_dialog::init())
+    .plugin(tauri_plugin_shell::init())
     .invoke_handler(tauri::generate_handler![
       check_docker_installed,
       add_cert_to_keychain,
       remove_cert_from_keychain,
       add_line_to_hosts,
       delete_line_from_hosts,
+      open_finder_or_explorer,
       keychain_passwords::save_password,
       keychain_passwords::get_password,
       keychain_passwords::delete_password,
@@ -262,5 +290,3 @@ fn main() {
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
-
-

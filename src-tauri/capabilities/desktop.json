@@ -1,0 +1,74 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "desktop-capability",
+  "windows": [
+    "main"
+  ],
+  "platforms": [
+    "linux",
+    "macOS",
+    "windows"
+  ],
+  "permissions": [
+    "fs:default",
+    "fs:allow-app-meta-recursive",
+    "fs:allow-app-read-recursive",
+    "fs:allow-app-write-recursive",
+    "fs:scope-appdata-recursive",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$RESOURCE/bundle/templates/docker-compose.yml.template"
+        },
+        {
+          "path": "$RESOURCE/bundle/templates/default.nginx.conf.template"
+        },
+        {
+          "path": "$RESOURCE/bundle/templates/server.conf.template"
+        }
+      ]
+    },
+    "dialog:default",
+    "dialog:allow-confirm",
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "name": "run-docker-compose",
+          "cmd": "docker",
+          "args": true
+        },
+        {
+          "name": "stop-docker-compose",
+          "cmd": "docker",
+          "args": true
+        },
+        {
+          "name": "check-docker-container-exists",
+          "cmd": "docker",
+          "args": true
+        },
+        {
+          "name": "docker-version",
+          "cmd": "docker",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "open-docker-app",
+          "cmd": "open",
+          "args": [
+            "-a",
+            "Docker Desktop"
+          ]
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-execute",
+      "allow": []
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { BaseDirectory } from "@tauri-apps/api/fs";
+import { BaseDirectory } from "@tauri-apps/plugin-fs";
 import { ProxyManager } from "../proxy-manager";
 
 export const CONFIG_PATH = "Config";

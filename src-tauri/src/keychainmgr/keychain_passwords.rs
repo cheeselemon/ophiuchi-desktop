@@ -1,7 +1,7 @@
 use security_framework::passwords::{
   delete_generic_password, get_generic_password, set_generic_password,
 };
-use tauri::InvokeError;
+use tauri::ipc::InvokeError;
 
 /**
  * Note:

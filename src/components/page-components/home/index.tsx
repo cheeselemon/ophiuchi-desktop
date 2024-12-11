@@ -1,7 +1,7 @@
 "use client";
 
 // When using the Tauri API npm package:
-import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useCallback, useEffect } from "react";
 // Write a text file to the `$APPCONFIG/app.conf` path
 

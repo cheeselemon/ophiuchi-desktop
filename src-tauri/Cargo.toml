@@ -12,15 +12,22 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.4.0", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "dialog-ask", "updater", "dialog-message", "fs-remove-file", "fs-remove-dir", "dialog-confirm", "shell-execute", "shell-open", "path-all", "fs-create-dir", "fs-exists", "fs-read-dir", "fs-read-file", "fs-copy-file", "fs-write-file"] }
-sentry-tauri = "0.2"
+tauri = { version = "2", features = [] }
+tauri-plugin-sentry = "0.2"
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
+tauri-plugin-shell = "2"
 chrono = "0.4.38"
 security-framework = "2.11.0"
+syn = "=2.0.90" 
+dotenv = "0.15.0"
+
 
 
 [dependencies.fix-path-env]
@@ -33,3 +40,4 @@ git = "https://github.com/tauri-apps/fix-path-env-rs"
 # If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.
 # DO NOT REMOVE!!
 custom-protocol = [ "tauri/custom-protocol" ]
+

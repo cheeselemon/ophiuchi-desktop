@@ -1,18 +1,18 @@
 import { Button } from "@/components/ui/button";
 import Code from "@/components/ui/code";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CertificateManager } from "@/helpers/certificate-manager";
 import { IProxyData } from "@/helpers/proxy-manager/interfaces";
@@ -20,9 +20,9 @@ import { cn } from "@/lib/utils";
 import proxyListStore from "@/stores/proxy-list";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Label } from "@radix-ui/react-label";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
-import { open as shellOpen } from "@tauri-apps/api/shell";
+import { open as shellOpen } from "@tauri-apps/plugin-shell";
 import { useCallback, useEffect, useState } from "react";
 import CreateProxyV2SideComponent from "../add-new";
 import { AddProxyToGroupDialog } from "../add-new/proxy-to-group";

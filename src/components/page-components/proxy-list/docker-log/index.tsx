@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Command } from "@tauri-apps/api/shell";
+import { Command } from "@tauri-apps/plugin-shell";
 import { Fragment, useEffect, useState } from "react";
 
 export default function DockerLogModal({

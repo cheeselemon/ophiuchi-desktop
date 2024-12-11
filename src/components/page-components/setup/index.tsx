@@ -6,7 +6,7 @@ import { SystemHelper } from "@/helpers/system";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import pkg from "../../../../package.json";

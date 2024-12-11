@@ -8,9 +8,13 @@ import {
 import { CertificateManager } from "@/helpers/certificate-manager";
 import { cn } from "@/lib/utils";
 import proxyListStore from "@/stores/proxy-list";
-import { BaseDirectory, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
 import { appDataDir, resolveResource } from "@tauri-apps/api/path";
-import { Command } from "@tauri-apps/api/shell";
+import {
+  BaseDirectory,
+  readTextFile,
+  writeTextFile,
+} from "@tauri-apps/plugin-fs";
+import { Command } from "@tauri-apps/plugin-shell";
 import { useCallback, useState } from "react";
 import DockerLogModal from "../proxy-list/docker-log";
 
@@ -45,7 +49,7 @@ export default function DockerControl({}: {}) {
     const dockerComposePath = `${appDataDirPath}/docker-compose.yml`;
     const lines: string[] = [];
     return new Promise<boolean>((resolve) => {
-      const command = new Command("check-docker-container-exists", [
+      const command = Command.create("check-docker-container-exists", [
         "compose",
         "-f",
         dockerComposePath,
@@ -94,7 +98,7 @@ export default function DockerControl({}: {}) {
     await certMgr.deleteAllNginxConfigurationFiles();
 
     return new Promise<void>((resolve, reject) => {
-      const command = new Command("stop-docker-compose", [
+      const command = Command.create("stop-docker-compose", [
         "compose",
         "-f",
         `${appDataDirPath}/docker-compose.yml`,
@@ -166,12 +170,12 @@ export default function DockerControl({}: {}) {
 
     appendDockerProcessStream(`👉 Starting container...`);
     await writeTextFile(`docker-compose.yml`, dockerComposeTemplate, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
 
     const appDataDirPath = await appDataDir();
 
-    const command = new Command("run-docker-compose", [
+    const command = Command.create("run-docker-compose", [
       "compose",
       "-f",
       `${appDataDirPath}/docker-compose.yml`,

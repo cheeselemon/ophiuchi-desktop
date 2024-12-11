@@ -21,9 +21,9 @@ import {
   QuestionMarkCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { invoke } from "@tauri-apps/api";
-import { message } from "@tauri-apps/api/dialog";
+import { invoke } from "@tauri-apps/api/core";
 import { appDataDir } from "@tauri-apps/api/path";
+import { message } from "@tauri-apps/plugin-dialog";
 import { Roboto_Mono } from "next/font/google";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import RequestPasswordModal from "../request-certificate-trust";
@@ -85,7 +85,7 @@ export default function CreateProxyV2SideComponent({
     if (!currentData) return;
     setShouldAddCertToKeychain(true);
     const appDataDirPath = await appDataDir();
-    const pemFilePath = `${appDataDirPath}cert/${currentData.hostname}/cert.pem`;
+    const pemFilePath = `${appDataDirPath}/cert/${currentData.hostname}/cert.pem`;
     // support for whitespaces in path
     // const whiteSpaced = pemFilePath.replace(/ /g, "\\ ");
     invoke("remove_cert_from_keychain", {
@@ -246,7 +246,7 @@ export default function CreateProxyV2SideComponent({
                                     </PopoverContent>
                                   </Popover>
                                 </p>
-                                <div className="">
+                                <div className="flex flex-col items-end gap-4">
                                   <MultiStateButton
                                     notReady={{
                                       current: false,
@@ -267,6 +267,20 @@ export default function CreateProxyV2SideComponent({
                                       },
                                     }}
                                   />
+                                  {sslCertGenComplete === true && (
+                                    <p
+                                      className="text-zinc-400 text-sm underline cursor-pointer"
+                                      onClick={async () => {
+                                        const appDataDirPath =
+                                          await appDataDir();
+                                        invoke("open_finder_or_explorer", {
+                                          path: `${appDataDirPath}/cert/${currentData?.hostname}`,
+                                        });
+                                      }}
+                                    >
+                                      Locate certificates on Finder...
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex justify-between items-center py-8">
@@ -288,11 +302,11 @@ export default function CreateProxyV2SideComponent({
                                       keychain and trusted. This is required for
                                       the browser to trust the connection. You
                                       will be asked for your password or
-                                      fingerprint.
+                                      fingerprint depending on your system.
                                     </PopoverContent>
                                   </Popover>
                                 </p>
-                                <div className="">
+                                <div className="flex flex-col items-end">
                                   <MultiStateButton
                                     notReady={{
                                       current: !sslCertGenComplete,
@@ -313,6 +327,20 @@ export default function CreateProxyV2SideComponent({
                                       },
                                     }}
                                   />
+                                  {sslCertGenComplete === true && (
+                                    <p
+                                      className="text-zinc-400 text-sm underline cursor-pointer"
+                                      onClick={async () => {
+                                        const appDataDirPath =
+                                          await appDataDir();
+                                        invoke("open_finder_or_explorer", {
+                                          path: `${appDataDirPath}/cert/${currentData?.hostname}`,
+                                        });
+                                      }}
+                                    >
+                                      I'll do it myself...
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex justify-between items-center py-8">
