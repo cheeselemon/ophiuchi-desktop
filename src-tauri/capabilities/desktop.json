@@ -68,7 +68,14 @@
     },
     {
       "identifier": "shell:allow-execute",
-      "allow": []
-    }
+      "allow": [
+        {
+          "name": "check-docker-container",
+          "cmd": "docker",
+          "args": true
+        }
+      ]
+    },
+    "shell:allow-open"
   ]
 }

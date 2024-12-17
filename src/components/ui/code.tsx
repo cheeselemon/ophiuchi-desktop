@@ -8,11 +8,11 @@ export default function Code({
   style?: "normal" | "sudo";
 }) {
   function fontColor() {
-    return style === "normal" ? "text-gray-100" : "text-red-500";
+    return style === "normal" ? " " : "text-red-500";
   }
 
   function bgColor() {
-    return style === "normal" ? "bg-zinc-900" : "bg-red-950";
+    return style === "normal" ? " " : "bg-red-950";
   }
 
   return (

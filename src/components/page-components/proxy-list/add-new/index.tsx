@@ -166,7 +166,7 @@ export default function CreateProxyV2SideComponent({
             </div>
           </div>
         )} */}
-          <div className="fixed inset-0 overflow-hidden bg-zinc-950 bg-opacity-50 backdrop-blur-sm">
+          <div className="fixed inset-0 overflow-hidden bg-opacity-50 backdrop-blur-sm">
             <div className="absolute inset-0 overflow-hidden">
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                 <Transition.Child
@@ -179,25 +179,25 @@ export default function CreateProxyV2SideComponent({
                   leaveTo="translate-x-full"
                 >
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-full">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-zinc-950 py-6 shadow-xl">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-background py-6 shadow-xl">
                       <div className="px-4 sm:px-6">
                         <div className="flex items-start justify-between">
-                          <Dialog.Title className="text-lg font-semibold leading-6 text-white">
+                          <Dialog.Title className="text-lg font-semibold leading-6  ">
                             Let's create a new proxy!
                           </Dialog.Title>
-                          <div className="ml-3 flex h-7 items-center">
-                            <button
-                              type="button"
-                              className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                              onClick={() => resetAndClose()}
+                          <div className="ml-3 flex items-center">
+                            <Button
+                            variant={"ghost"}
+                            size={"sm"}
+                              onClick={() => {
+                                resetAndClose();
+                              }}
                             >
-                              <span className="absolute -inset-2.5" />
-                              <span className="sr-only">Close panel</span>
                               <XMarkIcon
                                 className="h-6 w-6"
                                 aria-hidden="true"
                               />
-                            </button>
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -211,7 +211,7 @@ export default function CreateProxyV2SideComponent({
                         )}
                         {createStep >= 1 && (
                           <div className="flex flex-col gap-8 w-full max-w-4xl mx-auto h-full justify-center">
-                            <div className="flex flex-col gap-4 text-center bg-zinc-700 rounded-lg p-4">
+                            <div className="flex flex-col gap-4 text-center   rounded-lg p-4">
                               <h1 className="text-xl font-semibold">
                                 http://localhost:
                                 <span className="text-yellow-500">
@@ -269,7 +269,7 @@ export default function CreateProxyV2SideComponent({
                                   />
                                   {sslCertGenComplete === true && (
                                     <p
-                                      className="text-zinc-400 text-sm underline cursor-pointer"
+                                      className="  text-sm underline cursor-pointer"
                                       onClick={async () => {
                                         const appDataDirPath =
                                           await appDataDir();
@@ -329,7 +329,7 @@ export default function CreateProxyV2SideComponent({
                                   />
                                   {sslCertGenComplete === true && (
                                     <p
-                                      className="text-zinc-400 text-sm underline cursor-pointer"
+                                      className="  text-sm underline cursor-pointer"
                                       onClick={async () => {
                                         const appDataDirPath =
                                           await appDataDir();
@@ -529,7 +529,7 @@ function CreateFormComponent({
             min={1}
             max={65535}
             required={true}
-            className="p-2 bg-transparent border border-gray-600 caret-gray-600 rounded-md text-gray-100 text-5xl"
+            className="p-2 bg-transparent border   caret-gray-600 rounded-md  text-5xl"
             placeholder="3000"
             value={portState}
             onChange={(e) => {
@@ -547,9 +547,7 @@ function CreateFormComponent({
             required={true}
             maxLength={64}
             className={cn(
-              hostnameExists
-                ? "border-red-500 text-red-400"
-                : "border-gray-600 text-gray-100",
+              hostnameExists ? "border-red-500 text-red-400" : "   ",
               "p-2 bg-transparent border caret-gray-600 rounded-md text-5xl"
             )}
             placeholder="my.example.local"

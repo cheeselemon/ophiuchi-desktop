@@ -60,13 +60,13 @@ export default function DockerLogModal({
                 <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6  "
                   >
                     Docker Command Log
                   </Dialog.Title>
                   <div className="mt-2">
-                    <div className="h-[50%] max-h-[400px] overflow-y-auto bg-zinc-50 p-8 min-h-[400px]">
-                      <code className="text-sm text-gray-500 whitespace-pre-wrap ">
+                    <div className="h-[50%] max-h-[400px] overflow-y-auto  p-8 min-h-[400px]">
+                      <code className="text-sm  whitespace-pre-wrap ">
                         {showDetailedLog ? detailedStream : stream}
                       </code>
                     </div>
@@ -81,7 +81,7 @@ export default function DockerLogModal({
                       Close
                     </button>
                     <p
-                      className="text-sm text-gray-800 cursor-pointer underline"
+                      className="text-sm   cursor-pointer underline"
                       onClick={async () => {
                         setShowDetailedLog(true);
                       }}
@@ -89,7 +89,7 @@ export default function DockerLogModal({
                       See detailed logs...
                     </p>
                     <p
-                      className="text-sm text-gray-800 cursor-pointer underline"
+                      className="text-sm   cursor-pointer underline"
                       onClick={async () => {
                         const openDockerCmd = new Command("open-docker-app");
                         const openDockerOutput = await openDockerCmd.execute();

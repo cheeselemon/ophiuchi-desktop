@@ -39,6 +39,12 @@ export class CertificateManager {
     });
   }
 
+  async checkCertificateExists(hostname: string) {
+    return await exists(`cert/${hostname}/cert.pem`, {
+      baseDir: BaseDirectory.AppData,
+    });
+  }
+
   async generateNginxConfigurationFiles(hostname: string, port: number) {
     // save to file
     if (

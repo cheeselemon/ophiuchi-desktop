@@ -18,6 +18,7 @@ import { Command } from "@tauri-apps/plugin-shell";
 import { useCallback, useState } from "react";
 import DockerLogModal from "../proxy-list/docker-log";
 
+
 export default function DockerControl({}: {}) {
   const { proxyList } = proxyListStore();
   const [dockerProcessStream, setDockerProcessStream] = useState<any>("");
@@ -138,6 +139,8 @@ export default function DockerControl({}: {}) {
       appendDockerProcessStream(`👉 Stopping and removing container...`);
     });
   };
+
+ 
 
   const startDocker = async () => {
     setDockerModalOpen(true);

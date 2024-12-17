@@ -43,7 +43,7 @@ export default function RequestPasswordModal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-zinc-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0  bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -68,12 +68,12 @@ export default function RequestPasswordModal({
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <Dialog.Title
                       as="h3"
-                      className="text-base font-semibold leading-6 text-gray-900"
+                      className="text-base font-semibold leading-6  "
                     >
                       Password Required
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500 leading-relaxed">
+                      <p className="text-sm  leading-relaxed">
                         <span className="font-bold">{description}</span>
                         <br />
                         <br />
@@ -90,7 +90,7 @@ export default function RequestPasswordModal({
                         name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 px-1.5   shadow-sm ring-1 ring-inset ring-gray-300 placeholder:  focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         placeholder=""
                       />
                     </div>
@@ -99,7 +99,7 @@ export default function RequestPasswordModal({
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold   shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                     onClick={() => {
                       onConfirm(password);
                     }}
@@ -108,7 +108,7 @@ export default function RequestPasswordModal({
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-zinc-50 sm:mt-0 sm:w-auto"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold   shadow-sm ring-1 ring-inset ring-gray-300 hover: sm:mt-0 sm:w-auto"
                     onClick={() => setOpen(false)}
                     ref={cancelButtonRef}
                   >

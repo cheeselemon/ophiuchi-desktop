@@ -80,6 +80,7 @@ dependencies = [
  "tauri-plugin-opener",
  "tauri-plugin-sentry",
  "tauri-plugin-shell",
+ "time",
 ]
 
 [[package]]

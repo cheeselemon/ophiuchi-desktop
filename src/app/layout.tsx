@@ -1,8 +1,15 @@
+import { AppSidebar } from "@/components/app-sidebar";
+import { SystemSetupProvider } from "@/components/page-components/setup-provider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["100", "300", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Local HTTPS Proxy Server",
@@ -15,8 +22,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={notoSans.className}>
+        <SystemSetupProvider/>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full p-6 relative">{children}</main>
+          </SidebarProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

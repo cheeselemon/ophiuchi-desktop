@@ -218,6 +218,30 @@ fn remove_cert_from_keychain(name: String) {
 }
 
 #[tauri::command(rename_all = "snake_case")]
+fn cert_exist_on_keychain(name: String) -> Result<bool, String> {
+    // Create a command to execute
+    let mut command = Command::new("security");
+
+    // Add arguments to the command
+    command
+        .arg("find-certificate")
+        .arg("-c")
+        .arg(name);
+
+    // Execute the command
+    let output = command.output().expect("Failed to execute command");
+
+    // Check the command's exit status
+    if output.status.success() {
+        println!("Certificate found on keychain.");
+        Ok(true)
+    } else {
+        println!("Certificate not found on keychain.");
+        Ok(false)
+    }
+}
+
+#[tauri::command(rename_all = "snake_case")]
 fn check_docker_installed() -> Result<bool, String> {
   let output = Command::new("docker").arg("--version").output();
 
@@ -285,6 +309,7 @@ fn main() {
       check_docker_installed,
       add_cert_to_keychain,
       remove_cert_from_keychain,
+      cert_exist_on_keychain,
       add_line_to_hosts,
       delete_line_from_hosts,
       open_finder_or_explorer,

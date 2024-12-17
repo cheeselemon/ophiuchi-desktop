@@ -22,16 +22,16 @@ export function AddProxyGroupDialog({ onDone }: { onDone: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
+        <Button variant="ghost" size="sm" className="">
           <PlusIcon className="h-4 w-4" />
-          Add Group
+          Create Group
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Group</DialogTitle>
+          <DialogTitle>Create Group</DialogTitle>
           <DialogDescription>
-            Add a new group to organize your proxies.
+            Create a new group to organize your proxies.
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">

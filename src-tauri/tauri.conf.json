@@ -59,12 +59,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 1000,
+        "height": 768,
         "resizable": true,
         "title": "Ophiuchi",
-        "width": 1200,
+        "width": 1280,
         "minWidth": 1024,
-        "minHeight": 768,
+        "minHeight": 640,
         "useHttpsScheme": true
       }
     ],

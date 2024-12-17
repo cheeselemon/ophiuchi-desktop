@@ -1,33 +1,39 @@
+import { AddProxyDialog } from "@/components/page-components/add-proxy";
+import CertButtons from "@/components/page-components/certificate-dialogs/cert-buttons";
+import { AddProxyToGroupDialog } from "@/components/page-components/proxy-list/add-new/proxy-to-group";
+import { EditGroupDialog } from "@/components/page-components/proxy-list/edit/group";
+import RequestPasswordModal from "@/components/page-components/proxy-list/request-certificate-trust";
 import { Button } from "@/components/ui/button";
 import Code from "@/components/ui/code";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CertificateManager } from "@/helpers/certificate-manager";
 import { IProxyData } from "@/helpers/proxy-manager/interfaces";
-import { cn } from "@/lib/utils";
 import proxyListStore from "@/stores/proxy-list";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import { Label } from "@radix-ui/react-label";
 import { invoke } from "@tauri-apps/api/core";
-import { appDataDir } from "@tauri-apps/api/path";
-import { open as shellOpen } from "@tauri-apps/plugin-shell";
 import { useCallback, useEffect, useState } from "react";
-import CreateProxyV2SideComponent from "../add-new";
-import { AddProxyToGroupDialog } from "../add-new/proxy-to-group";
-import { EditGroupDialog } from "../edit/group";
-import RequestPasswordModal from "../request-certificate-trust";
 
 export default function ProxyListTable() {
   const {
@@ -36,10 +42,10 @@ export default function ProxyListTable() {
     selectedGroup,
     removeProxyFromList,
     removeProxyFromGroup,
+    deleteGroup,
   } = proxyListStore();
 
   const [loaded, setLoaded] = useState(false);
-  const [openSide, setOpenSide] = useState(false);
   const [currentEndpoint, setCurrentEndpoint] = useState<IProxyData>();
   const [passwordModalShown, setPasswordModalOpen] = useState(false);
 
@@ -66,12 +72,6 @@ export default function ProxyListTable() {
       name: `${endpoint.hostname}`,
     });
     setPasswordModalOpen(true);
-  }, []);
-
-  const openCert = useCallback(async (data: IProxyData) => {
-    const appDataDirPath = await appDataDir();
-    const certPath = `${appDataDirPath}/cert/${data.hostname}`;
-    shellOpen(certPath);
   }, []);
 
   const prepareConfigPage = useCallback(async () => {
@@ -105,7 +105,7 @@ export default function ProxyListTable() {
         <>
           {" "}
           list of proxies in this group. <br />
-          Press start sontainer to start the docker webserver.
+          Press start Container to start the docker webserver.
         </>
       );
     }
@@ -113,7 +113,7 @@ export default function ProxyListTable() {
 
   return (
     <>
-      <CreateProxyV2SideComponent open={openSide} setOpen={setOpenSide} />
+      {/* <CreateProxyV2SideComponent open={openSide} setOpen={setOpenSide} /> */}
       <RequestPasswordModal
         description={"Ophiuchi wants to edit: /etc/hosts."}
         isOpen={passwordModalShown}
@@ -121,7 +121,7 @@ export default function ProxyListTable() {
           setPasswordModalOpen(false);
           if (!currentEndpoint) return;
           onDeleteFromHosts(currentEndpoint, password);
-          const configHelper = new CertificateManager();
+          const configHelper = CertificateManager.shared();
           configHelper.deleteCertificateFiles(currentEndpoint.hostname);
           configHelper.deleteNginxConfigurationFiles(currentEndpoint.hostname);
 
@@ -131,7 +131,7 @@ export default function ProxyListTable() {
       <div className="px-6 border border-zinc-700 rounded-md py-6">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <Label className="font-medium leading-6 text-white">
+            <Label className="font-medium leading-6  ">
               {selectedGroup?.isNoGroup ? (
                 "Proxy List"
               ) : (
@@ -144,22 +144,14 @@ export default function ProxyListTable() {
               )}
             </Label>
           </div>
+
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             {selectedGroup?.isNoGroup ? (
-              <Button
-                variant={"default"}
-                size="sm"
-                className={cn(
-                  "flex gap-2 items-center",
-                  proxyList.length === 0 ? "animate-bounce" : ""
-                )}
-                onClick={() => {
-                  setOpenSide(true);
+              <AddProxyDialog
+                onDone={() => {
+                  //
                 }}
-              >
-                <PlusIcon className="w-4 h-4" />
-                Create New Proxy
-              </Button>
+              />
             ) : (
               <AddProxyToGroupDialog
                 onDone={() => {
@@ -178,32 +170,38 @@ export default function ProxyListTable() {
                   <TableRow>
                     <TableHead className="w-[400px]">Hostname</TableHead>
                     <TableHead>Application Port</TableHead>
+                    <TableHead>Certificate</TableHead>
                     <TableHead className="text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {proxyList.map((proxyItem) => (
-                    <TableRow key={proxyItem.hostname}>
-                      <TableCell className="font-medium">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <a
-                              className="p-2 underline cursor-pointer text-sm sm:pl-0"
-                              href={`https://${proxyItem.hostname}`}
-                              target="_blank"
-                            >
-                              {proxyItem.hostname}
-                            </a>
-                          </TooltipTrigger>
-                          <TooltipContent side="right">
-                            <p>Click to open on browser.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>{proxyItem.port}</TableCell>
+                  {proxyList.map(async (proxyItem) => {
+                    return (
+                      <TableRow key={proxyItem.hostname}>
+                        <TableCell className="font-medium">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <a
+                                className="p-2 underline cursor-pointer text-sm sm:pl-0"
+                                href={`https://${proxyItem.hostname}`}
+                                target="_blank"
+                              >
+                                {proxyItem.hostname}
+                              </a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">
+                              <p>Click to open on browser.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>{proxyItem.port}</TableCell>
 
-                      <TableCell className="text-right">
-                        {/* <p
+                        <TableCell>
+                          <CertButtons item={proxyItem} />
+                        </TableCell>
+
+                        <TableCell className="text-right">
+                          {/* <p
                           onClick={() => {
                             openCert(proxyItem);
                           }}
@@ -211,50 +209,83 @@ export default function ProxyListTable() {
                         >
                           Locate Cert
                         </p> */}
-                        {selectedGroup?.isNoGroup ? (
-                          <Button
-                            size={"sm"}
-                            variant={"destructive"}
-                            onClick={() => {
-                              onDeleteEndpoint(proxyItem);
-                            }}
-                          >
-                            Delete
-                          </Button>
-                        ) : (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                size={"sm"}
-                                variant={"ghost"}
-                                onClick={() => {
-                                  if (!selectedGroup) return;
-                                  removeProxyFromGroup(
-                                    proxyItem,
-                                    selectedGroup
-                                  );
-                                }}
-                              >
-                                Remove from Group
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">
-                              <p>
-                                Remove this proxy from the group{" "}
-                                <Code>{selectedGroup?.name}</Code>
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                          {selectedGroup?.isNoGroup ? (
+                            <Button
+                              size={"sm"}
+                              variant={"destructive"}
+                              onClick={() => {
+                                onDeleteEndpoint(proxyItem);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          ) : (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  size={"sm"}
+                                  variant={"ghost"}
+                                  onClick={() => {
+                                    if (!selectedGroup) return;
+                                    removeProxyFromGroup(
+                                      proxyItem,
+                                      selectedGroup
+                                    );
+                                  }}
+                                >
+                                  Remove from Group
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <p>
+                                  Remove this proxy from the group{" "}
+                                  <Code>{selectedGroup?.name}</Code>
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
           </div>
         </div>
       </div>
+      {selectedGroup?.isNoGroup ? null : (
+        <div className="text-right pt-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button type="button" variant={"ghost"} size="sm">
+                <span className="text-muted-foreground">Delete Group</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="">
+              <DialogHeader>
+                <DialogTitle>Delete Group</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete this group?
+                </DialogDescription>
+              </DialogHeader>
+              <Code>{selectedGroup?.name}</Code>
+              <DialogFooter>
+                <Button
+                  variant={"destructive"}
+                  onClick={() => {
+                    if (selectedGroup) {
+                      deleteGroup(selectedGroup?.id);
+                    }
+                  }}
+                >
+                  Yes, delete.
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
     </>
   );
 }

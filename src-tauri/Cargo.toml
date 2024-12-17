@@ -27,6 +27,7 @@ chrono = "0.4.38"
 security-framework = "2.11.0"
 syn = "=2.0.90" 
 dotenv = "0.15.0"
+time = "0.3.36"
 
 
 

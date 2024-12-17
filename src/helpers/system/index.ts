@@ -14,6 +14,6 @@ export class SystemHelper {
   async boot() {
     const mgr = ProxyManager.sharedManager();
     await mgr.boot();
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
