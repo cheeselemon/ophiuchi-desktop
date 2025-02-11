@@ -6,6 +6,7 @@ services:
     image: nginx:1.23.2-alpine
     ports:
       - 443:443
+      - 80:80
     extra_hosts:
     - "host.docker.internal:host-gateway"
     volumes:
