@@ -1,15 +1,15 @@
 {
-  "version": "v0.5.0",
-  "notes": "0.5.0 Stable",
-  "pub_date": "2024-06-04T12:05:00Z",
+  "version": "v0.5.1",
+  "notes": "0.5.1 Stable",
+  "pub_date": "2024-06-06T00:30:00Z",
   "platforms": {
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRUUhPeXZIazkyQXlha3lpUkwyR2V0NE1hNDJ2dlF6MVE0aFFSQkk1SGdLNTlZM1EzYkN4WjRhT2hINXN5ZVI2WmFlaGhZS0ljSUtBTmdyKzJ0NGtaQ3o2UVFnY2NtaGdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE3NTAyNTg2CWZpbGU6T3BoaXVjaGkuYXBwLnRhci5negpIanordE00dkkwT3RRZ3hoNkxKSW5zamNTanJmUTByYlBPbm13b0RlMW1jZ214M21VY2ZJUldCaVg5a0lYTWdqajVPS2VFazN3bE9iWStGUk9OMEdCQT09Cg==",
-      "url": "https://release.ophiuchi.dev/stable/update/v1.0.0/Ophiuchi.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRUUhPeXZIazkyQStxTXV4YkdkSjJnOGNnbW9FQ2Y1QVVLVm1XL3g1N2ZWa1RBTE1TT1pnTFVTRVdtNitXQ0NudkZ3WlJ6Sjkrdms1SlJXK0xzV2RjVXh3NHdEQlNHc2cwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE3NjMzNjA4CWZpbGU6T3BoaXVjaGkuYXBwLnRhci5negpoaWpEVVZCSllFSXdJS0FSSktqT09YSDRNem5JcmU2QjkrYzFoRkQ2bnh0RGw1RHc2dXlPNTlFanN3aE5rM3VhMDBWTEVWNEhPQStndGlIWGdsT3BEUT09Cg==",
+      "url": "https://release.ophiuchi.dev/stable/update/v0.5.1/Ophiuchi.app.tar.gz"
     },
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRUUhPeXZIazkyQXlha3lpUkwyR2V0NE1hNDJ2dlF6MVE0aFFSQkk1SGdLNTlZM1EzYkN4WjRhT2hINXN5ZVI2WmFlaGhZS0ljSUtBTmdyKzJ0NGtaQ3o2UVFnY2NtaGdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE3NTAyNTg2CWZpbGU6T3BoaXVjaGkuYXBwLnRhci5negpIanordE00dkkwT3RRZ3hoNkxKSW5zamNTanJmUTByYlBPbm13b0RlMW1jZ214M21VY2ZJUldCaVg5a0lYTWdqajVPS2VFazN3bE9iWStGUk9OMEdCQT09Cg==",
-      "url": "https://release.ophiuchi.dev/stable/update/v1.0.0/Ophiuchi.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRUUhPeXZIazkyQStxTXV4YkdkSjJnOGNnbW9FQ2Y1QVVLVm1XL3g1N2ZWa1RBTE1TT1pnTFVTRVdtNitXQ0NudkZ3WlJ6Sjkrdms1SlJXK0xzV2RjVXh3NHdEQlNHc2cwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE3NjMzNjA4CWZpbGU6T3BoaXVjaGkuYXBwLnRhci5negpoaWpEVVZCSllFSXdJS0FSSktqT09YSDRNem5JcmU2QjkrYzFoRkQ2bnh0RGw1RHc2dXlPNTlFanN3aE5rM3VhMDBWTEVWNEhPQStndGlIWGdsT3BEUT09Cg==",
+      "url": "https://release.ophiuchi.dev/stable/update/v0.5.1/Ophiuchi.app.tar.gz"
     }
   }
 }

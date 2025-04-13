@@ -22,16 +22,17 @@ export function AddProxyGroupDialog({ onDone }: { onDone: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
+        <Button variant="ghost" size="sm" className="">
           <PlusIcon className="h-4 w-4" />
-          Add Group
+          Create Group
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Group</DialogTitle>
+          <DialogTitle>Create Group</DialogTitle>
           <DialogDescription>
-            Add a new group to organize your proxies.
+            Groups are useful when you have separate projects and want to launch
+            them with different configurations.
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
@@ -41,7 +42,7 @@ export function AddProxyGroupDialog({ onDone }: { onDone: () => void }) {
             </Label>
             <Input
               id="name"
-              placeholder="ex) Workplace"
+              placeholder="ex) My Awesome Project"
               value={groupName}
               onChange={(e) => {
                 setGroupName(e.target.value);

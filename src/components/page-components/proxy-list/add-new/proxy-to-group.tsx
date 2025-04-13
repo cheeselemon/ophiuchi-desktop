@@ -31,15 +31,13 @@ export function AddProxyToGroupDialog({ onDone }: { onDone: () => void }) {
     addProxyToGroup,
     selectedGroup,
   } = proxyListStore();
-  const [groupName, setGroupName] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm" className="w-full">
-          <BookmarkPlusIcon className="h-4 w-4 mr-2" />
-          Add Existing Proxy To Group
+          <BookmarkPlusIcon className="h-4 w-4 mr-2" /> Add
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl">

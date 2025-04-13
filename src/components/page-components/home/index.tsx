@@ -1,7 +1,7 @@
 "use client";
 
 // When using the Tauri API npm package:
-import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useCallback, useEffect } from "react";
 // Write a text file to the `$APPCONFIG/app.conf` path
 
@@ -22,18 +22,18 @@ export function HomeComponent() {
 
   const onStartServer = useCallback(async () => {
     const res = await writeTextFile("app.conf", "file contents", {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
     console.log(res);
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 text-gray-100 bg-zinc-900">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2   ">
       <div className="py-4">
-        <h1 className="text-2xl tracking-tight font-semibold text-gray-300">
+        <h1 className="text-2xl tracking-tight font-semibold  ">
           Ophiuchi
         </h1>
-        <p className="text-gray-400 text-sm">
+        <p className="  text-sm">
           Start your local HTTPS proxy server with docker.
         </p>
       </div>
@@ -57,7 +57,7 @@ export function HomeComponent() {
           </div>
           <div className="">
             <button
-              className="px-4 py-2 text-white bg-blue-700 rounded-lg"
+              className="px-4 py-2   bg-blue-700 rounded-lg"
               onClick={() => {
                 onStartServer();
               }}

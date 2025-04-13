@@ -1,4 +1,4 @@
-import { createDir, exists, writeTextFile } from "@tauri-apps/api/fs";
+import { exists, mkdir, writeTextFile } from "@tauri-apps/plugin-fs";
 import { ProxyManager } from "..";
 import {
   CONFIG_DIR,
@@ -9,13 +9,13 @@ import {
 import { IProxyGroupData } from "../interfaces";
 
 export async function m001_createGroupIfNotExists(mgrInstance: ProxyManager) {
-  const dir = mgrInstance.getBaseDir();
-  const dirExist = await exists(CONFIG_DIR, { dir });
+  const baseDir = mgrInstance.getBaseDir();
+  const dirExist = await exists(CONFIG_DIR, { baseDir });
   if (!dirExist) {
-    await createDir(CONFIG_DIR, { dir, recursive: true });
+    await mkdir(CONFIG_DIR, { baseDir, recursive: true });
   }
   // create group file if not exists
-  const fileExists = await exists(`${CONFIG_DIR}/${GROUP_FILE_NAME}`, { dir });
+  const fileExists = await exists(`${CONFIG_DIR}/${GROUP_FILE_NAME}`, { baseDir });
   if (!fileExists) {
     const defaultGroup: IProxyGroupData = {
       id: DEFAULT_PROXY_GROUP_ID,
@@ -29,7 +29,7 @@ export async function m001_createGroupIfNotExists(mgrInstance: ProxyManager) {
       `${CONFIG_DIR}/${GROUP_FILE_NAME}`,
       JSON.stringify([defaultGroup]),
       {
-        dir,
+        baseDir,
       }
     );
   }

@@ -33,3 +33,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE folders
+.idea
+.vscode
+
+.env
+.cursor/rules/workflow-rule.mdc

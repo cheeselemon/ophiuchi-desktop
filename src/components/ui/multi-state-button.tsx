@@ -19,7 +19,7 @@ export default function MultiStateButton({
   };
 }) {
   function bgColor() {
-    if (done.current) return "";
+    if (done.current) return "bg-zinc-600 cursor-not-allowed";
     if (ready.current) return "bg-yellow-500 animate-bounce";
     if (notReady.current) return "bg-zinc-600 cursor-not-allowed";
   }
@@ -33,7 +33,7 @@ export default function MultiStateButton({
   function textColor() {
     if (done.current) return "text-green-400";
     if (ready.current) return "text-yellow-900 font-medium";
-    if (notReady.current) return "text-gray-900";
+    if (notReady.current) return " ";
   }
 
   function displayString() {

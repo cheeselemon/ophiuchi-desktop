@@ -1,14 +1,18 @@
+"use client";
+
+import { AppSidebar } from "@/components/app-sidebar";
+import { SystemSetupProvider } from "@/components/page-components/setup-provider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Local HTTPS Proxy Server",
-  description: "Local HTTPS Proxy Server",
-};
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "600", "700", "800"],
+});
 
 export default function RootLayout({
   children,
@@ -16,8 +20,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={cn(inter.className, "dark")}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn("overflow-hidden overscroll-none", notoSans.className)}>
+        <SystemSetupProvider />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full p-3 relative bg-sidebar min-h-screen max-h-screen overflow-y-auto flex flex-col">
+              {children}
+            </main>
+          </SidebarProvider>
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

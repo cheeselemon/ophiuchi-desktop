@@ -2,6 +2,12 @@ upstream internal_{UPSTREAM_SUFFIX} {
     server host.docker.internal:{PORT};
 }
 
+# Websocket connection upgrade mapping
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
 server {
     # domain name
     server_name {DOMAIN_NAME};
@@ -21,9 +27,13 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         
-        # websockets 지원
+        # Websocket Support
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
+        proxy_set_header Connection $connection_upgrade;
+        
+        # Additional Headers
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         
         proxy_pass         http://internal_{UPSTREAM_SUFFIX};
     }   

@@ -3,136 +3,73 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:8899",
-    "distDir": "../out"
+    "frontendDist": "../out",
+    "devUrl": "http://localhost:8899"
   },
-  "package": {
-    "productName": "Ophiuchi",
-    "version": "0.5.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "path": {
-        "all": true
-      },
-      "dialog": {
-        "all": false,
-        "ask": false,
-        "confirm": true,
-        "message": true,
-        "open": false,
-        "save": false
-      },
-      "fs": {
-        "scope": [
-          "$APPDATA/",
-          "$APPDATA/*",
-          "$APPDATA/**",
-          "$RESOURCE/**"
-        ],
-        "readDir": true,
-        "createDir": true,
-        "exists": true,
-        "writeFile": true,
-        "copyFile": true,
-        "readFile": true,
-        "removeDir": true,
-        "removeFile": true
-      },
-      "shell": {
-        "open": "/**/*",
-        "execute": true,
-        "scope": [
-          {
-            "name": "run-docker-compose",
-            "cmd": "docker",
-            "args": true
-          },
-          {
-            "name": "stop-docker-compose",
-            "cmd": "docker",
-            "args": true
-          },
-          {
-            "name": "check-docker-container-exists",
-            "cmd": "docker",
-            "args": true
-          },
-          {
-            "name": "docker-version",
-            "cmd": "docker",
-            "args": [
-              "--version"
-            ]
-          },
-          {
-            "name": "open-docker-app",
-            "cmd": "open",
-            "args": [
-              "-a",
-              "Docker Desktop"
-            ]
-          }
-        ]
-      }
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [
+      "bundle/templates/**/*"
+    ],
+    "shortDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "dev.ophiuchi.desktop",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [
-        "bundle/templates/**/*"
-      ],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
     },
-    "security": {
-      "csp": null
-    },
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "productName": "Ophiuchi",
+  "mainBinaryName": "Ophiuchi",
+  "version": "0.6.0",
+  "identifier": "dev.ophiuchi.desktop",
+  "plugins": {
     "updater": {
-      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM3NjRGMUVBRkVDMUMxMApSV1FRSE95dkhrOTJBejRlcVRBMzV0ajFkR1UvVnpPRHI1ekNYVHp6VUdHYjZOYUhYa2p2UVVhRgo=",
       "endpoints": [
-        "https://release.ophiuchi.dev/stable/update-check-v1/latest.json"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM3NjRGMUVBRkVDMUMxMApSV1FRSE95dkhrOTJBejRlcVRBMzV0ajFkR1UvVnpPRHI1ekNYVHp6VUdHYjZOYUhYa2p2UVVhRgo="
-    },
+        "https://ophiuchi.dev/stable/update-check-v2/latest"
+      ]
+    }
+  },
+  "app": {
     "windows": [
       {
         "fullscreen": false,
-        "height": 1000,
+        "height": 768,
         "resizable": true,
         "title": "Ophiuchi",
-        "width": 1200,
+        "width": 1280,
         "minWidth": 1024,
-        "minHeight": 768
+        "minHeight": 640,
+        "useHttpsScheme": true
       }
-    ]
+    ],
+    "security": {
+      "csp": null
+    }
   }
 }

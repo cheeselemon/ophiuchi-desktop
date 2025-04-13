@@ -1,28 +1,33 @@
+import { appDataDir, resolveResource } from "@tauri-apps/api/path";
 import {
   BaseDirectory,
-  createDir,
   exists,
+  mkdir,
   readTextFile,
-  removeDir,
-  removeFile,
+  remove,
   writeTextFile,
-} from "@tauri-apps/api/fs";
-import { resolveResource } from "@tauri-apps/api/path";
+} from "@tauri-apps/plugin-fs";
 import * as selfsigned from "selfsigned";
 
 let instance: CertificateManager | null = null;
 
 export class CertificateManager {
+  private appDataDir: string = "";
+
   async deleteCertificateFiles(hostname: string) {
-    await removeDir(`cert/${hostname}`, {
-      dir: BaseDirectory.AppData,
+    await remove(`cert/${hostname}`, {
+      baseDir: BaseDirectory.AppData,
       recursive: true,
     });
   }
 
+  getManualCommandToDeleteCertificate(hostname: string) {
+    return `rm -rf "${this.appDataDir}/cert/${hostname}"`;
+  }
+
   async deleteAllNginxConfigurationFiles() {
-    await removeDir(`conf/conf.d`, {
-      dir: BaseDirectory.AppData,
+    await remove(`conf/conf.d`, {
+      baseDir: BaseDirectory.AppData,
       recursive: true,
     });
   }
@@ -30,25 +35,46 @@ export class CertificateManager {
   async deleteNginxConfigurationFiles(hostname: string) {
     if (
       !(await exists(`conf/conf.d/${hostname}.conf`, {
-        dir: BaseDirectory.AppData,
+        baseDir: BaseDirectory.AppData,
       }))
     ) {
       return;
     }
-    await removeFile(`conf/conf.d/${hostname}.conf`, {
-      dir: BaseDirectory.AppData,
+    await remove(`conf/conf.d/${hostname}.conf`, {
+      baseDir: BaseDirectory.AppData,
     });
+  }
+
+  async checkCertificateExists(hostname: string) {
+    return await exists(`cert/${hostname}/cert.pem`, {
+      baseDir: BaseDirectory.AppData,
+    });
+  }
+
+  async cleanUp() {
+    if (await exists(`conf/conf.d`, {
+      baseDir: BaseDirectory.AppData,
+    })) {
+      await remove(`conf/conf.d`, {
+        baseDir: BaseDirectory.AppData,
+        recursive: true,
+      });
+      await mkdir(`conf/conf.d`, {
+        baseDir: BaseDirectory.AppData,
+        recursive: true,
+      });
+    }
   }
 
   async generateNginxConfigurationFiles(hostname: string, port: number) {
     // save to file
     if (
       !(await exists(`conf/conf.d`, {
-        dir: BaseDirectory.AppData,
+        baseDir: BaseDirectory.AppData,
       }))
     ) {
-      await createDir(`conf/conf.d`, {
-        dir: BaseDirectory.AppData,
+      await mkdir(`conf/conf.d`, {
+        baseDir: BaseDirectory.AppData,
         recursive: true,
       });
     }
@@ -62,7 +88,7 @@ export class CertificateManager {
     );
 
     await writeTextFile(`conf/nginx.conf`, nginxDefaultConfigTemplate, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
 
     // read nginx file from bundle
@@ -84,12 +110,18 @@ export class CertificateManager {
     // replace all occurences of {PORT} with port
     const nginxConfigWithPort = nginxConfig.replace(/{PORT}/g, port.toString());
 
+    // write nginx config to file
     await writeTextFile(`conf/conf.d/${hostname}.conf`, nginxConfigWithPort, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
   }
   constructor() {
     // init
+    this.init();
+  }
+
+  async init() {
+    this.appDataDir = await appDataDir();
   }
 
   public static shared(): CertificateManager {
@@ -128,28 +160,28 @@ export class CertificateManager {
     // save to file
     if (
       !(await exists(`cert/${hostname}`, {
-        dir: BaseDirectory.AppData,
+        baseDir: BaseDirectory.AppData,
       }))
     ) {
-      await createDir(`cert/${hostname}`, {
-        dir: BaseDirectory.AppData,
+      await mkdir(`cert/${hostname}`, {
+        baseDir: BaseDirectory.AppData,
         recursive: true,
       });
     }
 
     // write public
     await writeTextFile(`cert/${hostname}/public.crt`, pems.public, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
 
     // write key
     await writeTextFile(`cert/${hostname}/private.key`, pems.private, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
 
     // write cert
     await writeTextFile(`cert/${hostname}/cert.pem`, pems.cert, {
-      dir: BaseDirectory.AppData,
+      baseDir: BaseDirectory.AppData,
     });
 
     return pems;

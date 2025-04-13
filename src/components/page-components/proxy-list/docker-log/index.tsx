@@ -1,20 +1,31 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Command } from "@tauri-apps/api/shell";
-import { Fragment, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import { useEffect, useState } from "react";
 
 export default function DockerLogModal({
   stream,
   detailedStream,
   isOpen,
   onClosed,
+  onClearLogs,
 }: {
   stream: any;
   detailedStream: any;
   isOpen: boolean;
   onClosed?: () => void;
+  onClearLogs?: () => void;
 }) {
   const [_isOpen, setIsOpen] = useState(true);
-  const [showDetailedLog, setShowDetailedLog] = useState(false);
+  const [showDetailedLog, setShowDetailedLog] = useState(true);
 
   useEffect(() => {
     setIsOpen(isOpen);
@@ -22,89 +33,75 @@ export default function DockerLogModal({
 
   function closeModal() {
     setIsOpen(false);
-    setShowDetailedLog(false);
     onClosed && onClosed();
-  }
-
-  function openModal() {
-    setIsOpen(true);
   }
 
   return (
     <>
-      <Transition appear show={_isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Docker Command Log
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <div className="h-[50%] max-h-[400px] overflow-y-auto bg-zinc-50 p-8 min-h-[400px]">
-                      <code className="text-sm text-gray-500 whitespace-pre-wrap ">
-                        {showDetailedLog ? detailedStream : stream}
-                      </code>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center gap-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Close
-                    </button>
-                    <p
-                      className="text-sm text-gray-800 cursor-pointer underline"
-                      onClick={async () => {
-                        setShowDetailedLog(true);
-                      }}
-                    >
-                      See detailed logs...
-                    </p>
-                    <p
-                      className="text-sm text-gray-800 cursor-pointer underline"
-                      onClick={async () => {
-                        const openDockerCmd = new Command("open-docker-app");
-                        const openDockerOutput = await openDockerCmd.execute();
-                        console.log(openDockerOutput);
-                      }}
-                    >
-                      Open Docker Desktop
-                    </p>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent
+          className="sm:max-w-4xl"
+          onCloseAutoFocus={(event) => {
+            // fix for https://github.com/radix-ui/primitives/issues/1241
+            event.preventDefault();
+            document.body.style.pointerEvents = "";
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>Docker Command Log</DialogTitle>
+            <DialogDescription>
+              This dialog shows the logs of the docker command that was
+              executed.
+              <br />
+              To see detailed logs of the docker command, check the detailed logs
+              checkbox.
+              <br />
+              <span>You can close the dialog anytime.</span>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <div className="mt-2  w-full">
+                <div className="h-[50%] max-h-[400px] overflow-y-auto  p-8 min-h-[400px] bg-foreground/10 rounded-lg">
+                  <code className="text-sm  whitespace-pre-wrap">
+                    {showDetailedLog ? detailedStream : stream}
+                  </code>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-4 justify-end">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="detailed-logs"
+                  checked={showDetailedLog}
+                  onCheckedChange={(checked) =>
+                    setShowDetailedLog(checked as boolean)
+                  }
+                />
+                <label
+                  htmlFor="detailed-logs"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  See detailed logs
+                </label>
+              </div>
             </div>
           </div>
-        </Dialog>
-      </Transition>
+          <DialogFooter>
+            <Button
+              variant={"outline"}
+              onClick={async () => {
+                onClearLogs && onClearLogs();
+              }}
+            >
+              Clear Logs
+            </Button>
+            <Button variant={"secondary"} onClick={closeModal}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
