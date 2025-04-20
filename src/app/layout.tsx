@@ -3,6 +3,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SystemSetupProvider } from "@/components/page-components/setup-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import GoogleAnalytics from "@/components/tools/ga";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
@@ -21,7 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("overflow-hidden overscroll-none", notoSans.className)}>
+      <body
+        className={cn("overflow-hidden overscroll-none", notoSans.className)}
+      >
+        <GoogleAnalytics />
         <SystemSetupProvider />
         <ThemeProvider
           attribute="class"

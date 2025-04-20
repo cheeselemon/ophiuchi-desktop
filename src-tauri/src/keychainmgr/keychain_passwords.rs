@@ -14,7 +14,6 @@
 //   pub fn get_generic_password(service: &str, account: &str) -> Result<Vec<u8>>
 //   Get the generic password for the given service and account. If no matching keychain entry exists, fails with error code errSecItemNotFound.
 //  */
-
 // const PREFIX: &str = "dev.ophiuchi.app: ";
 // const SERVICE_NAME_PREFIX: &str = "dev.ophiuchi.app: ";
 

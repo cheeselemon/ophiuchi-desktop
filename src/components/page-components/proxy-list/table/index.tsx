@@ -46,7 +46,7 @@ import {
 import { IProxyData } from "@/helpers/proxy-manager/interfaces";
 import { cn } from "@/lib/utils";
 import proxyListStore from "@/stores/proxy-list";
-import { Bookmark, CheckIcon, TriangleAlertIcon, XIcon } from "lucide-react";
+import { Bookmark, CheckIcon, CircleAlertIcon, XIcon } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import DockerControl from "../../docker-control";
 
@@ -225,15 +225,15 @@ export default function ProxyListTable() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        {proxyItem.port}
+                        <span>{proxyItem.port}</span>
                         {proxyList.filter((p) => p.port === proxyItem.port)
                           .length > 1 && (
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <TriangleAlertIcon className="w-3 h-3 text-red-500" />
+                              <CircleAlertIcon className="w-3 h-3 text-gray-500" />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>This port is already used by another proxy.</p>
+                              <p>This port is also used by another proxy.</p>
                             </TooltipContent>
                           </Tooltip>
                         )}

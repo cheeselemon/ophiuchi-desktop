@@ -53,8 +53,7 @@ const ButtonWithDropdown = forwardRef<
         size="sm"
         onClick={isDockerContainerRunning ? onStop : onStart}
         disabled={
-          (proxyList.length === 0 || proxyListHasDuplicatePorts || disabled) &&
-          !isDockerContainerRunning
+          (proxyList.length === 0 || disabled) && !isDockerContainerRunning
         }
       >
         <DockerIcon className="w-4 h-4" />
@@ -68,10 +67,7 @@ const ButtonWithDropdown = forwardRef<
             size="icon-sm"
             aria-label="Options"
             disabled={
-              (proxyList.length === 0 ||
-                proxyListHasDuplicatePorts ||
-                disabled) &&
-              !isDockerContainerRunning
+              (proxyList.length === 0 || disabled) && !isDockerContainerRunning
             }
           >
             <ChevronDownIcon size={16} aria-hidden="true" />

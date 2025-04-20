@@ -36,6 +36,7 @@ import { usePathname } from "next/navigation";
 import packageJson from "../../package.json";
 import DiscordIcon from "./icons/discord";
 import { AddProxyGroupDialog } from "./page-components/proxy-list/add-new/group";
+import UpdaterInterface from "./page-components/updater";
 import { Badge } from "./ui/badge";
 
 // Menu items.
@@ -100,7 +101,6 @@ function DockerStatus() {
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { isCheckDone, isDockerInstalled } = systemStatusStore();
   const { selectedGroup, groupList, setSelectedGroup, totalProxyList } =
     proxyListStore();
 
@@ -118,6 +118,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
+        <UpdaterInterface />
         <SidebarGroupLabel>Application</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>

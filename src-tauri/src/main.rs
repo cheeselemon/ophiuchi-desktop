@@ -12,6 +12,11 @@ use std::io::{self, prelude::*};
 use std::process::Command;
 use tauri_plugin_sentry::{minidump, sentry};
 
+#[tauri::command]
+fn get_env(name: &str) -> String {
+    std::env::var(String::from(name)).unwrap_or(String::from(""))
+}
+
 #[tauri::command(rename_all = "snake_case")]
 fn add_line_to_hosts(hostname: String, password: String) {
     // Construct the line to add to /etc/hosts
@@ -356,8 +361,13 @@ fn main() {
     dotenv().ok();
     let _ = fix_path_env::fix();
     let sentry_dsn = std::env::var("SENTRY_DSN");
-    let mut builder =
-        tauri::Builder::default().plugin(tauri_plugin_updater::Builder::new().build());
+    let mut builder = tauri::Builder::default()
+        .setup(|app| {
+            #[cfg(desktop)]
+            app.handle()
+                .plugin(tauri_plugin_updater::Builder::new().build())?;
+            Ok(())
+        });
 
     if sentry_dsn.is_ok() {
         // console output
@@ -381,11 +391,13 @@ fn main() {
     }
 
     builder
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
+            get_env,
             check_docker_installed,
             add_cert_to_keychain,
             remove_cert_from_keychain,

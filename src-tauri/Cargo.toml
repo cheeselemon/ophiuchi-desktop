@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "0.6.0"
+version = "0.6.1"
 description = "Ophiuchi - Developers Toolkit"
 authors = ["Jaeha Kim"]
 license = "Private"
@@ -12,17 +12,18 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "2.2", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "2", features = [] }
+tauri = { version = "=2.5", features = [] }
 tauri-plugin-sentry = "0.2"
-tauri-plugin-fs = { version = "2.0.0", features = ["watch"] }
-tauri-plugin-dialog = "2"
+tauri-plugin-fs = { version = "=2.2.0", features = ["watch"] }
+tauri-plugin-dialog = "=2.2"
 tauri-plugin-opener = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
-tauri-plugin-shell = "2"
+tauri-plugin-shell = "=2.2"
+tauri-plugin-process = "=2.2"
 chrono = "0.4.38"
 security-framework = "2.11.0"
 syn = "=2.0.90" 
@@ -45,5 +46,5 @@ git = "https://github.com/tauri-apps/fix-path-env-rs"
 custom-protocol = [ "tauri/custom-protocol" ]
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-updater = "2"
+tauri-plugin-updater = "=2.6"
 

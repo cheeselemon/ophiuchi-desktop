@@ -41,11 +41,11 @@
         "depends": []
       }
     },
-    "createUpdaterArtifacts": "v1Compatible"
+    "createUpdaterArtifacts": true
   },
   "productName": "Ophiuchi",
   "mainBinaryName": "Ophiuchi",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "identifier": "dev.ophiuchi.desktop",
   "plugins": {
     "updater": {
