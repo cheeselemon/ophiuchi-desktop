@@ -8,6 +8,7 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import * as selfsigned from "selfsigned";
+import { isWindows } from "@/lib/utils";
 
 let instance: CertificateManager | null = null;
 
@@ -22,7 +23,11 @@ export class CertificateManager {
   }
 
   getManualCommandToDeleteCertificate(hostname: string) {
-    return `rm -rf "${this.appDataDir}/cert/${hostname}"`;
+    if (isWindows()) {
+      return `powershell -Command "Remove-Item -Path '${this.appDataDir}\\cert\\${hostname}' -Recurse -Force"`;
+    } else {
+      return `rm -rf "${this.appDataDir}/cert/${hostname}"`;
+    }
   }
 
   async deleteAllNginxConfigurationFiles() {

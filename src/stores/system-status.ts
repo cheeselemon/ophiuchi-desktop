@@ -1,4 +1,5 @@
 import { appDataDir } from "@tauri-apps/api/path";
+import { exists } from "@tauri-apps/plugin-fs";
 import { Command } from "@tauri-apps/plugin-shell";
 import { create } from "zustand";
 
@@ -62,6 +63,15 @@ const systemStatusStore = create<SystemStatusStore>((set, get) => ({
     dockerComposePath: string,
   ): Promise<DockerContainerStatus> => {
     try {
+
+      const fileExists = await exists(dockerComposePath);
+      if (!fileExists) {
+        return {
+          containerInfo: null,
+          isRunning: false,
+          error: "Invalid docker-compose path",
+        };
+      }
       // Execute docker compose ps command
       const command = Command.create("check-docker-container", [
         "compose",
@@ -86,8 +96,11 @@ const systemStatusStore = create<SystemStatusStore>((set, get) => ({
       }
 
       // Parse the JSON output
-      const containers = JSON.parse(result.stdout);
-      // console.log(containers);
+      let containers = JSON.parse(result.stdout);
+
+      if (!Array.isArray(containers)) {
+        containers = [containers]
+      }
       // Check if any container is running
       // Docker compose ps returns an array of containers with their states
       const runningContainers = containers.filter(

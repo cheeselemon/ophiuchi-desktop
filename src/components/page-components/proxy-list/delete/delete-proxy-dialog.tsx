@@ -23,7 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CertificateManager } from "@/helpers/certificate-manager";
 import { IProxyData } from "@/helpers/proxy-manager/interfaces";
-import { cn } from "@/lib/utils";
+import { cn, isWindows } from "@/lib/utils";
 import type { Certificate } from "@/stores/cert-keychain-store";
 import { certKeychainStore } from "@/stores/cert-keychain-store";
 import systemStatusStore from "@/stores/system-status";
@@ -91,10 +91,15 @@ export function DeleteProxyDialog({ proxy, onDelete }: DeleteProxyDialogProps) {
       title: "Remove from /etc/hosts",
       description: "Delete hostname entry from hosts file",
       manualDescription:
-        "Copy and paste the following command into your terminal.",
-      requiresPassword: true,
-      manualCommand: (proxy: IProxyData) =>
-        `sudo sed -i '' '/^127\\.0\\.0\\.1[[:space:]]*'${proxy.hostname}'$/d' /etc/hosts`,
+        isWindows() ? "Manually remove as per instruction" : "Copy and paste the following command into your terminal.",
+      requiresPassword: !isWindows(),
+      manualCommand: (proxy: IProxyData) => {
+        if (isWindows()) {
+          return `Open C:\\Windows\\System32\\drivers\\etc\\hosts file using notepad with admin previlege and manually remove 127.0.0.1 ${proxy.hostname}`
+        } else {
+          return `sudo sed -i '' '/^127\\.0\\.0\\.1[[:space:]]*${proxy.hostname}$/d' /etc/hosts`;
+        }
+      },
     },
     {
       step: 2,
@@ -104,11 +109,15 @@ export function DeleteProxyDialog({ proxy, onDelete }: DeleteProxyDialogProps) {
         "Copy and paste the following command into your terminal.",
       requiresPassword: false,
       manualCommand: (proxy: IProxyData) => {
-        // get the SHA-1
         const sha1 = foundCertificates.find(
           (cert) => cert.name === proxy.hostname,
         )?.sha1;
-        return `security delete-certificate -Z "${sha1}"`;
+
+        if (isWindows()) {
+          return `powershell -Command "Get-ChildItem -Path Cert:\\LocalMachine\\Root | Where-Object { $_.Thumbprint -eq '${sha1}' } | Remove-Item"`;
+        } else {
+          return `security delete-certificate -Z "${sha1}"`;
+        }
       },
     },
     {
@@ -401,8 +410,10 @@ export function DeleteProxyDialog({ proxy, onDelete }: DeleteProxyDialogProps) {
                 <div className="flex items-center gap-2">
                   <TriangleAlertIcon className="h-3 w-3 text-yellow-500" />
                   <p className="text-xs text-muted-foreground">
-                    Follow these steps carefully. System password will be
-                    required for some operations.
+                    {isWindows()
+                      ? "Follow these steps carefully. Administrator privileges will be required for some operations."
+                      : "Follow these steps carefully. System password will be required for some operations."
+                    }
                   </p>
                 </div>
 

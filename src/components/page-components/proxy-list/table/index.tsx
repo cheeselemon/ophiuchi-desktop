@@ -46,7 +46,8 @@ import {
 import { IProxyData } from "@/helpers/proxy-manager/interfaces";
 import { cn } from "@/lib/utils";
 import proxyListStore from "@/stores/proxy-list";
-import { Bookmark, CheckIcon, CircleAlertIcon, XIcon } from "lucide-react";
+import systemStatusStore from "@/stores/system-status"
+import { AlertCircle, Bookmark, CheckIcon, CircleAlertIcon, XIcon } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import DockerControl from "../../docker-control";
 
@@ -111,6 +112,7 @@ export default function ProxyListTable() {
     proxyListStore();
 
   const [loaded, setLoaded] = useState(false);
+  const { isDockerContainerRunning } = systemStatusStore();
 
   const prepareConfigPage = useCallback(async () => {
     console.log("prepareConfigPage");
@@ -208,20 +210,31 @@ export default function ProxyListTable() {
                 return (
                   <TableRow key={proxyItem.hostname}>
                     <TableCell className="font-medium">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <a
-                            className="cursor-pointer p-2 text-sm underline sm:pl-0"
-                            href={`https://${proxyItem.hostname}`}
-                            target="_blank"
-                          >
-                            {proxyItem.hostname}
-                          </a>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">
-                          <p>Click to open on browser.</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <div className="flex flex-row items-center">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <a
+                              className="cursor-pointer p-2 text-sm underline sm:pl-0"
+                              href={`https://${proxyItem.hostname}`}
+                              target="_blank"
+                            >
+                              {proxyItem.hostname}
+                            </a>
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Click to open on browser.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        {!isDockerContainerRunning &&
+                            (<Tooltip>
+                              <TooltipTrigger asChild>
+                                <AlertCircle className="h-3.5 w-3.5 text-yellow-500" />
+                              </TooltipTrigger>
+                              <TooltipContent side="right">
+                                <p>Open your Docker and click Start Container button on the top right</p>
+                              </TooltipContent>
+                            </Tooltip>)}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
